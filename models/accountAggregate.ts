@@ -1,0 +1,18 @@
+import {Account} from "./account"
+
+export class AccountAggregate {
+  public Accounts: Account[];
+  private emergencyAmountNeeded: number = 10000;
+
+  public FlexibleAmountAvailable = (): number => {
+    return this.NonRetirementTotal() - this.emergencyAmountNeeded;
+  }
+
+  private NonRetirementTotal = (): number => {
+    return this.Accounts.filter(account => account.Type != 'Retirement').map(x => x.CurrentAmount).reduce((sum, element) => sum + element, 0)
+  }
+
+  public constructor(accounts: Account[]) {
+    this.Accounts = accounts;
+  }
+}
