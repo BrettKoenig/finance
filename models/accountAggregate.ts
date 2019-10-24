@@ -2,10 +2,10 @@ import {Account} from "./account"
 
 export class AccountAggregate {
   public Accounts: Account[];
-  private emergencyAmountNeeded: number = 10000;
+  private emergencyAmountNeeded: number = 10;
 
   public FlexibleAmountAvailable = (): number => {
-    return this.NonRetirementTotal() - this.emergencyAmountNeeded;
+    return Math.max(0, this.NonRetirementTotal() - this.emergencyAmountNeeded);
   }
 
   private NonRetirementTotal = (): number => {
