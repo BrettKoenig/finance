@@ -15,5 +15,8 @@
   },
   "devDependencies": {
     "@types/moment": "^2.13.0"
+  },
+  "scripts": {
+    "start": "tsc index.ts && node index"
   }
 }

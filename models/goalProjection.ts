@@ -31,8 +31,19 @@ export class GoalProjection {
   }
 
   public ProjectedFinishedDate = (): moment.Moment => {
-    const monthsLeft = (this.Goal.Amount - this.PresentAmount) / this.CurrentRatePerMonth();
-    return moment().add(monthsLeft, 'months');
+    if(this.CurrentRatePerMonth() > 0){
+      const monthsLeft = (this.Goal.Amount - this.PresentAmount) / this.CurrentRatePerMonth();
+      return moment().add(monthsLeft, 'months');
+    }
+    return this.EXAGGERATED_FUTURE_DATE;
+  }
+
+  public FormattedProjectedFinishDate = (projectedFinish?: moment.Moment): string => {
+    projectedFinish = projectedFinish || this.ProjectedFinishedDate()
+    if(projectedFinish.isBefore(this.EXAGGERATED_FUTURE_DATE.subtract(1, 'year'))){
+      return this.ProjectedFinishedDate().format("MM/DD/YYYY");
+    }
+    return "Invalid date";
   }
 
   public PrintProjection = (): void => {
@@ -42,7 +53,7 @@ export class GoalProjection {
       displayString += "\tPercentage Fulfilled: " + this.PercentageFulfilled().toFixed(2) + "%\n";
       displayString += "\tCurrent Rate/Month: $" + this.CurrentRatePerMonth().toFixed(2) + "\n";
       displayString += "\tNeeded/Month for Goal: $" + this.AmountPerMonthNeededToHitGoal().toFixed(2) + "\n";
-      displayString += "\tCurrent Projected Finish: " + this.ProjectedFinishedDate().format("MM/DD/YYYY");
+      displayString += "\tCurrent Projected Finish: " + this.FormattedProjectedFinishDate();
     }
     displayString += "\n---------------------------------------\n";
     displayString += "---------------------------------------\n";
@@ -54,4 +65,6 @@ export class GoalProjection {
     const months = moment().diff(date, 'months');
     return months === 0 ? 1 : Math.abs(months);
   }
+
+  private EXAGGERATED_FUTURE_DATE: moment.Moment = moment().add(10000, 'years');
 }
