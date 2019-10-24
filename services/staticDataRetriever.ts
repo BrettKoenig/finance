@@ -1,8 +1,6 @@
 import {IDataRetriever} from './interfaces/IDataRetriever'
-import { Account } from '../models/account';
-import { Goal } from '../models/goal';
-import { GoalAggregate } from '../models/goalAggregate';
-import { AccountAggregate } from '../models/accountAggregate';
+import { Account, AccountAggregate, Goal, GoalAggregate } from "../models"
+
 
 export class StaticDataRetriever implements IDataRetriever {
   public getAccounts = (): Account[] => {
