@@ -1,22 +1,30 @@
 {
-  "name": "financets",
+  "name": "finance",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "start": "tsc && node --inspect dist/index.js",
+    "build": "tsc -p .",
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.js",
+    "csv": "tsc services/csvDataRetriever.ts && node services/csvDataRetriever",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "csv-parser": "^2.3.1",
+    "currency": "^4.1.0",
     "fs": "0.0.1-security",
     "moment": "^2.24.0",
-    "parse-csv": "^0.2.0"
+    "parse-csv": "^0.2.0",
+    "parse-num": "^1.0.0"
   },
   "devDependencies": {
-    "@types/moment": "^2.13.0"
-  },
-  "scripts": {
-    "start": "tsc index.ts && node index"
+    "@types/moment": "^2.13.0",
+    "@types/node": "^12.11.7",
+    "nodemon": "^1.19.4",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.4"
   }
 }
