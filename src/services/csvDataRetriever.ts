@@ -27,6 +27,7 @@ public getAccounts = (): Account[] => {
 }
 
 public getGoals = (): Goal[] => {
+  return null
 }
 
 public getGoalAggregate = (): GoalAggregate => {
