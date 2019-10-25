@@ -1,5 +1,6 @@
 import { Goal } from "./goal";
 import moment = require("moment");
+import { PriorityConsideration } from ".";
 
 export class GoalAggregate {
   public goals: Goal[];
@@ -78,5 +79,22 @@ export class GoalAggregate {
       date = moment(date, 'MM/DD/YYYY', false).toDate()
     }
     return date != null ? date.getTime() : 0;
+  }
+
+  public getCalculatedAmount = (goal: Goal, priorityConsideration: PriorityConsideration): number => {
+    if (goal.Percentage) {
+      return goal.Percentage;
+    }
+
+    switch (priorityConsideration) {
+      case PriorityConsideration.None:
+        return this.GetWeightPercentage(goal);
+      case PriorityConsideration.Light:
+        return this.GetPriorityLightWeightPercentage(goal);
+      case PriorityConsideration.Heavy:
+        return this.GetPriorityHeavyWeightPercentage(goal);
+      default:
+        throw "Priority Consideration not implemented"
+    }
   }
 }

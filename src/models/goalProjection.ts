@@ -15,12 +15,16 @@ export class GoalProjection {
     this.Goal = goal;
   }
 
-  public SetPresentAmount = (amount: number) =>{
-    this._presentAmount = amount;
+  public SetPresentAmount = (amount: number, shouldAdd?: boolean) => {
+    this._presentAmount = shouldAdd && this._presentAmount ? amount + this._presentAmount : amount;
   }
 
   public PercentageFulfilled = (): number => {
     return this.PresentAmount / this.Goal.Amount * 100;
+  }
+
+  public NeedsMore = (): boolean => {
+    return (this.Goal.Percentage == 0 && this.PresentAmount < this.Goal.Amount)
   }
 
   public IsAheadOfSchedule = (): boolean =>{

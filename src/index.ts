@@ -8,8 +8,8 @@ const dataRetriever = new CsvDataRetriever();
 async function calculateGoals() {
   const goalAggregate = await dataRetriever.getGoalAggregate();
   const accountAggregate = await dataRetriever.getAccountAggregate();
-  goalCalculator.calculateByDate(goalAggregate, accountAggregate)
-  goalCalculator.calculateByPriority(goalAggregate, accountAggregate)
+  // goalCalculator.calculateByDate(goalAggregate, accountAggregate)
+  // goalCalculator.calculateByPriority(goalAggregate, accountAggregate)
   goalCalculator.calculateWeightedWithPriority(goalAggregate, accountAggregate, PriorityConsideration.None);
   goalCalculator.calculateWeightedWithPriority(goalAggregate, accountAggregate, PriorityConsideration.Light);
   goalCalculator.calculateWeightedWithPriority(goalAggregate, accountAggregate, PriorityConsideration.Heavy);

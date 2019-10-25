@@ -29,7 +29,7 @@ export class Goal {
     if(!this.FinishDate){
       return 0;
     }
-    return this.Amount / moment(this.FinishDate).diff(moment(), 'days');
+    return this.Amount / moment(this.FinishDate, "MM/DD/YYYY", false).diff(moment(), 'days');
   }
 
   public GetWeight = (): number => {
