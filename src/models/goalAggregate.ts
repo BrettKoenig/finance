@@ -1,4 +1,5 @@
 import { Goal } from "./goal";
+import moment = require("moment");
 
 export class GoalAggregate {
   public goals: Goal[];
@@ -73,6 +74,9 @@ export class GoalAggregate {
   }
 
   private getTime(date?: Date): number {
+    if(typeof date == "string") {
+      date = moment(date, 'MM/DD/YYYY', false).toDate()
+    }
     return date != null ? date.getTime() : 0;
   }
 }

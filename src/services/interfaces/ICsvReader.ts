@@ -1,3 +1,3 @@
 export interface ICsvReader {
-  readFile<T>(filepath, parserFn): any
+  readFile<T>(filepath, parserFn, lookupData?): Promise<any>
 }

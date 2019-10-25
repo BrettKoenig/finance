@@ -33,10 +33,10 @@ export class GoalCalculator {
 
     for (let goal of goals.goals) {
       let goalProjection = new GoalProjection(goal);
-      
+
       let calculatedAmount = 0;
       if(amountToUse > 0) {
-        if(goal.Percentage) {
+        if(goal.Percentage && goal.Percentage > 0) {
           calculatedAmount = amountToUse * goal.Percentage;
         } else {
           calculatedAmount = amountToUse >= goal.Amount ? goal.Amount : amountToUse;

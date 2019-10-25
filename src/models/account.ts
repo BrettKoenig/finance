@@ -21,7 +21,7 @@ export class Account {
   public GetMostRecentHistory(){
     if(this.History.length > 0) {
       return this.History.sort((a: DatedAmount, b: DatedAmount) => {
-        return this.getTime(a.Date) - this.getTime(b.Date)
+        return this.getTime(b.Date) - this.getTime(a.Date)
       })[0].Amount
     }
     return 0

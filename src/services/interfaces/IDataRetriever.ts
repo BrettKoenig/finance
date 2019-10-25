@@ -4,8 +4,8 @@ import { GoalAggregate } from "../../models/goalAggregate";
 import { AccountAggregate } from "../../models/accountAggregate";
 
 export interface IDataRetriever {
-  getAccounts(): Account[];
+  getAccounts(): Promise<Account[]>;
   getGoals(): Promise<Goal[]>;
-  // getGoalAggregate(): GoalAggregate;
-  getAccountAggregate(): AccountAggregate;
+  getGoalAggregate(): Promise<GoalAggregate>;
+  getAccountAggregate(): Promise<AccountAggregate>;
 }
