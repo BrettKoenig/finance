@@ -1,8 +1,4 @@
-import { Goal } from "../models/goal"
-import { GoalAggregate } from "../models/goalAggregate"
-import { AccountAggregate } from "../models/accountAggregate"
-import { GoalProjection } from "../models/goalProjection";
-import { PriorityConsideration } from "../models/priorityConsideration";
+import { AccountAggregate, Goal, GoalAggregate, GoalProjection, PriorityConsideration } from "../models"
 
 export class GoalCalculator {
   public calculateByPriority = (goals: GoalAggregate, accounts: AccountAggregate): GoalProjection[] => {
