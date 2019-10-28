@@ -1,7 +1,7 @@
 import { CsvReader } from "./csvReader";
 import { ICsvReader } from "./interfaces/ICsvReader";
 import { IDataRetriever } from "./interfaces/IDataRetriever";
-import { Account, Goal, GoalAggregate, AccountAggregate, DatedAmount } from "../models";
+import { Account, Expense, Goal, GoalAggregate, AccountAggregate, DatedAmount } from "../models";
 import { AccountMap } from "../private/accounts";
 import moment from "moment";
 import parseNum from "parse-num";
@@ -54,5 +54,17 @@ export class CsvDataRetriever implements IDataRetriever {
 
   public getAccountAggregate = async (): Promise<AccountAggregate> => {
     return new AccountAggregate(await this.getAccounts())
+  }
+
+  public getExpenses = async (): Promise<Expense[]> => {
+    function expenseParser(data: any, returnObject: any) {
+      if (!returnObject) {
+        returnObject = []
+      }
+      returnObject.push(new Expense(data.Name, data.Price, data.Date, data.Category))
+      return returnObject
+    }
+
+    return await this.csvReader.readFile('/Users/bk/Desktop/Expense - Expenses.csv', expenseParser)
   }
 }
