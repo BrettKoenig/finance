@@ -1,21 +1,30 @@
-import * as moment from "moment";
+import moment from "moment";
 import { Goal } from "./goal";
+import parseNum from "parse-num";
 
 export class GoalProjection {
   public Goal: Goal;
   public AdjustedWeight: number;
-  private PresentAmount: number;
+  private _presentAmount: number;
+
+  get PresentAmount() {
+    return parseFloat(parseNum(this._presentAmount))
+  }
 
   public constructor(goal: Goal){
     this.Goal = goal;
   }
 
-  public SetPresentAmount = (amount: number) =>{
-    this.PresentAmount = amount;
+  public SetPresentAmount = (amount: number, shouldAdd?: boolean) => {
+    this._presentAmount = shouldAdd && this._presentAmount ? amount + this._presentAmount : amount;
   }
 
   public PercentageFulfilled = (): number => {
-    return this.PresentAmount / this.Goal.Amount;
+    return this.PresentAmount / this.Goal.Amount * 100;
+  }
+
+  public NeedsMore = (): boolean => {
+    return (this.Goal.Percentage == 0 && this.PresentAmount < this.Goal.Amount)
   }
 
   public IsAheadOfSchedule = (): boolean =>{
@@ -62,7 +71,7 @@ export class GoalProjection {
   }
 
   private MonthsBetween = (date: Date): number => {
-    const months = moment().diff(date, 'months');
+    const months = moment().diff(moment(date, "MM/DD/YYYY", false), 'months');
     return months === 0 ? 1 : Math.abs(months);
   }
 

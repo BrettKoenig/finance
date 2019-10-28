@@ -9,7 +9,7 @@ export class AccountAggregate {
   }
 
   private NonRetirementTotal = (): number => {
-    return this.Accounts.filter(account => account.Type != 'Retirement').map(x => x.CurrentAmount).reduce((sum, element) => sum + element, 0)
+    return this.Accounts.filter(account => account.Type == 'Savings').map(x => x.CurrentAmount).reduce((sum, element) => sum + element, 0)
   }
 
   public constructor(accounts: Account[]) {
