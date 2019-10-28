@@ -1,5 +1,5 @@
 import {IDataRetriever} from './interfaces/IDataRetriever'
-import { Account, AccountAggregate, Goal, GoalAggregate } from "../models"
+import { Account, AccountAggregate, Goal, GoalAggregate, Expense } from "../models"
 
 
 export class StaticDataRetriever implements IDataRetriever {
@@ -18,6 +18,16 @@ export class StaticDataRetriever implements IDataRetriever {
       new Goal("New House", 200, new Date(2019, 11), 2, new Date(), true, 0),
       new Goal("New Car", 20, new Date(2025, 5), 1, new Date(), true, 0),
       new Goal("General Savings", 0, new Date(), 0, new Date(), false, .1)
+    ])
+  })
+  }
+
+  public getExpenses = (): Promise<Expense[]> => {
+    return new Promise((resolve, reject) => {
+      resolve([
+      new Expense("Food out", 200, new Date(2019, 10, 1), "Restaurants"),
+      new Expense("Movie out", 20, new Date(2028, 5), "Entertainment"),
+      new Expense("Pay day", 10, new Date(2018, 1, 1), "Income")
     ])
   })
   }
