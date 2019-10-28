@@ -1,9 +1,6 @@
 node_modules/
 *.js
-<<<<<<< HEAD
 private/
-=======
 private/
 dist/
 src/private/
->>>>>>> 47cd119edda4716f061cfbb06621ff377f096ca2
