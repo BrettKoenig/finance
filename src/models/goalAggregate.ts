@@ -1,5 +1,5 @@
 import { Goal } from './goal'
-import moment = require('moment')
+import moment from 'moment'
 import { PriorityConsideration } from '.'
 
 export class GoalAggregate {
