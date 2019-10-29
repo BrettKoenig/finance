@@ -1,4 +1,4 @@
-import { Account, AccountAggregate, Expense, Goal, GoalAggregate } from "../../models";
+import { Account, AccountAggregate, Expense, ExpenseAggregate, Goal, GoalAggregate } from "../../models";
 
 export interface IDataRetriever {
   getAccounts(): Promise<Account[]>;
@@ -6,4 +6,5 @@ export interface IDataRetriever {
   getExpenses(): Promise<Expense[]>
   getGoalAggregate(): Promise<GoalAggregate>;
   getAccountAggregate(): Promise<AccountAggregate>;
+  getExpenseAggregate(): Promise<ExpenseAggregate>
 }
