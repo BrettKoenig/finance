@@ -1,7 +1,7 @@
 import { CsvReader } from "./csvReader";
 import { ICsvReader } from "./interfaces/ICsvReader";
 import { IDataRetriever } from "./interfaces/IDataRetriever";
-import { Account, Expense, ExpenseAggregate, Goal, GoalAggregate, AccountAggregate, DatedAmount } from "../models";
+import { Account, Budget, BudgetAggregate, Expense, ExpenseAggregate, Goal, GoalAggregate, AccountAggregate, DatedAmount } from "../models";
 import { AccountMap } from "../private/accounts";
 import moment from "moment";
 import parseNum from "parse-num";
@@ -70,5 +70,21 @@ export class CsvDataRetriever implements IDataRetriever {
 
   public getExpenseAggregate = async (): Promise<ExpenseAggregate> => {
     return new ExpenseAggregate(await this.getExpenses())
+  }
+
+  public getBudgets = async (): Promise<Budget[]> => {
+    function budgetParser(data: any, returnObject: any) {
+      if (!returnObject) {
+        returnObject = []
+      }
+      returnObject.push(new Budget(data.Category, parseNum(data['Monthly Budget']), data.Type, !!data['Fixed Expense (Exclude from weekly report)'], !!data.Rollover))
+      return returnObject
+    }
+
+    return await this.csvReader.readFile('/Users/bk/Desktop/Expense - Budgets.csv', budgetParser)
+  }
+
+  public getBudgetAggregate = async (): Promise<BudgetAggregate> => {
+    return new BudgetAggregate(await this.getBudgets())
   }
 }

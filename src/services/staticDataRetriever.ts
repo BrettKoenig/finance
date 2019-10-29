@@ -1,5 +1,5 @@
 import {IDataRetriever} from './interfaces/IDataRetriever'
-import { Account, AccountAggregate, ExpenseAggregate, Goal, GoalAggregate, Expense } from "../models"
+import { Account, AccountAggregate, Budget, BudgetAggregate, Expense, ExpenseAggregate, Goal, GoalAggregate } from "../models"
 
 
 export class StaticDataRetriever implements IDataRetriever {
@@ -32,6 +32,16 @@ export class StaticDataRetriever implements IDataRetriever {
   })
   }
 
+  public getBudgets = (): Promise<Budget[]> => {
+    return new Promise((resolve, reject) => {
+      resolve([
+      new Budget("Restaurants", 200, "Expense", false, true),
+      new Budget("Entertainment", 20, "Expense", false, true),
+      new Budget("Income", 10, "Income", false, false)
+    ])
+  })
+  }
+
   public getGoalAggregate = (): Promise<GoalAggregate> => {
     return new Promise((resolve, reject) => {
       this.getGoals().then((goals) => {
@@ -52,6 +62,14 @@ export class StaticDataRetriever implements IDataRetriever {
     return new Promise((resolve, reject) => {
       this.getExpenses().then((expenses) => {
         resolve(new ExpenseAggregate(expenses))
+      })
+    })
+  }
+
+  public getBudgetAggregate = (): Promise<BudgetAggregate> => {
+    return new Promise((resolve, reject) => {
+      this.getBudgets().then((budgets) => {
+        resolve(new BudgetAggregate(budgets))
       })
     })
   }
