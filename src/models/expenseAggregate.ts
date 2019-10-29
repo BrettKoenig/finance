@@ -1,9 +1,9 @@
-import { Expense } from ".";
+import { Expense } from '.'
 
 export class ExpenseAggregate {
-  public Expenses: Expense[];
+  public Expenses: Expense[]
 
   public constructor(expenses: Expense[]) {
-    this.Expenses = expenses;
+    this.Expenses = expenses
   }
 }
