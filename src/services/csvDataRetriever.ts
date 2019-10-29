@@ -1,31 +1,39 @@
-import { CsvReader } from "./csvReader";
-import { ICsvReader } from "./interfaces/ICsvReader";
-import { IDataRetriever } from "./interfaces/IDataRetriever";
-import { Account, Expense, Goal, GoalAggregate, AccountAggregate, DatedAmount } from "../models";
-import { AccountMap } from "../private/accounts";
-import moment from "moment";
-import parseNum from "parse-num";
-
+import { CsvReader } from './csvReader'
+import { ICsvReader } from './interfaces/ICsvReader'
+import { IDataRetriever } from './interfaces/IDataRetriever'
+import {
+  Account,
+  Budget,
+  BudgetAggregate,
+  Expense,
+  ExpenseAggregate,
+  Goal,
+  GoalAggregate,
+  AccountAggregate,
+  DatedAmount,
+} from '../models'
+import { AccountMap } from '../private/accounts'
+import moment from 'moment'
+import parseNum from 'parse-num'
 
 export class CsvDataRetriever implements IDataRetriever {
-
-  private csvReader: ICsvReader = new CsvReader();
+  private csvReader: ICsvReader = new CsvReader()
   private accountMap = AccountMap
 
   public getAccounts = async (): Promise<Account[]> => {
-    function accountParser(data: any, returnObject: any, lookupData: any) {
+    function accountParser(data: any, returnObject: Account[], lookupData: any): Account[] {
       if (!returnObject) {
         returnObject = []
-        for (let key in data) {
+        for (const key in data) {
           if (lookupData[key]) {
             returnObject.push(new Account(key, lookupData[key]))
           }
         }
       }
-      var date = moment(data['Month'], 'MM/DD/YYYY', false).toDate()
+      const date = moment(data['Month'], 'MM/DD/YYYY', false).toDate()
       if (!!date) {
-        for (let key in data) {
-          var account = returnObject.find(x => x.Name == key);
+        for (const key in data) {
+          const account = returnObject.find(x => x.Name == key)
           if (account) {
             account.History.push(new DatedAmount(date, parseNum(data[key])))
           }
@@ -37,11 +45,21 @@ export class CsvDataRetriever implements IDataRetriever {
   }
 
   public getGoals = async (): Promise<Goal[]> => {
-    function goalParser(data: any, returnObject: any) {
+    function goalParser(data: any, returnObject: Goal[]): Goal[] {
       if (!returnObject) {
         returnObject = []
       }
-      returnObject.push(new Goal(data.Name, data.Amount, data.FinishDate, data.Priority, data.StartDate, data.Flexible, data.Percentage))
+      returnObject.push(
+        new Goal(
+          data.Name,
+          data.Amount,
+          data.FinishDate,
+          data.Priority,
+          data.StartDate,
+          data.Flexible,
+          data.Percentage,
+        ),
+      )
       return returnObject
     }
 
@@ -57,7 +75,7 @@ export class CsvDataRetriever implements IDataRetriever {
   }
 
   public getExpenses = async (): Promise<Expense[]> => {
-    function expenseParser(data: any, returnObject: any) {
+    function expenseParser(data: any, returnObject: Expense[]): Expense[] {
       if (!returnObject) {
         returnObject = []
       }
@@ -66,5 +84,33 @@ export class CsvDataRetriever implements IDataRetriever {
     }
 
     return await this.csvReader.readFile('/Users/bk/Desktop/Expense - Expenses.csv', expenseParser)
+  }
+
+  public getExpenseAggregate = async (): Promise<ExpenseAggregate> => {
+    return new ExpenseAggregate(await this.getExpenses())
+  }
+
+  public getBudgets = async (): Promise<Budget[]> => {
+    function budgetParser(data: any, returnObject: Budget[]): Budget[] {
+      if (!returnObject) {
+        returnObject = []
+      }
+      returnObject.push(
+        new Budget(
+          data.Category,
+          parseNum(data['Monthly Budget']),
+          data.Type,
+          !!data['Fixed Expense (Exclude from weekly report)'],
+          !!data.Rollover,
+        ),
+      )
+      return returnObject
+    }
+
+    return await this.csvReader.readFile('/Users/bk/Desktop/Expense - Budgets.csv', budgetParser)
+  }
+
+  public getBudgetAggregate = async (): Promise<BudgetAggregate> => {
+    return new BudgetAggregate(await this.getBudgets())
   }
 }

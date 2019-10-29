@@ -1,5 +1,5 @@
 export enum PriorityConsideration {
   None,
   Light,
-  Heavy
+  Heavy,
 }
