@@ -95,15 +95,17 @@ export class CsvDataRetriever implements IDataRetriever {
       if (!returnObject) {
         returnObject = []
       }
-      returnObject.push(
-        new Budget(
-          data.Category,
-          parseNum(data['Monthly Budget']),
-          data.Type,
-          !!data['Fixed Expense (Exclude from weekly report)'],
-          !!data.Rollover,
-        ),
-      )
+      if (!Number.isNaN(parseNum(data['Monthly Budget']))) {
+        returnObject.push(
+          new Budget(
+            data.Category,
+            parseNum(data['Monthly Budget']),
+            data.Type,
+            !!data['Fixed Expense (Exclude from weekly report)'],
+            !!data.Rollover,
+          ),
+        )
+      }
       return returnObject
     }
 
