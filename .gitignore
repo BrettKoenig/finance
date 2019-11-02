@@ -4,3 +4,4 @@ private/
 private/
 dist/
 src/private/
+!src/tensorflow/*.js
