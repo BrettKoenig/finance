@@ -1,5 +1,6 @@
 import { Expense } from '.'
 import moment from 'moment'
+import fuzz from 'fuzzball'
 
 export class ExpenseAggregate {
   public Expenses: Expense[]
@@ -29,7 +30,13 @@ export class ExpenseAggregate {
 
   public findExpensesByDescription = (description: string, exactMatch?: false): ExpenseAggregate => {
     return new ExpenseAggregate(this.Expenses.filter((expense: Expense) => {
-      return exactMatch ? expense.Description === description : expense.Description.toLowerCase().trim() === description.toLowerCase().trim() 
+      return exactMatch ? expense.Description === description : fuzz.token_set_ratio(expense.Description, description) > 65
+    }))
+  }
+
+  public findExpensesByAmount = (low: number, high: number): ExpenseAggregate => {
+    return new ExpenseAggregate(this.Expenses.filter((expense: Expense) => {
+      return expense.Amount >= low && expense.Amount <= high
     }))
   }
 }
