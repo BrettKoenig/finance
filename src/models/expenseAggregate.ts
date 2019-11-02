@@ -1,6 +1,7 @@
 import { Expense } from '.'
 import moment from 'moment'
 import fuzz from 'fuzzball'
+import parseNum from 'parse-num'
 
 export class ExpenseAggregate {
   public Expenses: Expense[]
@@ -22,7 +23,19 @@ export class ExpenseAggregate {
     return this.findExpenseByDateRange(startDate, endDate)
   }
 
-  public findExpensesByCategory = (categoryName: string): ExpenseAggregate => {
+  public findExpensesByCategory = (categoryName: string | string[]): ExpenseAggregate => {
+    if(typeof categoryName === 'string') {
+      return this.GetExpenseBySingleCategory(categoryName)
+    } else {
+      var returnExpenseAggregate = new ExpenseAggregate([])
+      categoryName.forEach((category: string) => {
+        returnExpenseAggregate.Expenses.push(...this.GetExpenseBySingleCategory(category).Expenses)
+      })
+      return returnExpenseAggregate;
+    }
+  }
+
+  private GetExpenseBySingleCategory = (categoryName: string): ExpenseAggregate => {
     return new ExpenseAggregate(this.Expenses.filter((expense: Expense) => {
       return expense.Category.trim().toLowerCase() === categoryName.trim().toLowerCase()
     }))
@@ -38,5 +51,19 @@ export class ExpenseAggregate {
     return new ExpenseAggregate(this.Expenses.filter((expense: Expense) => {
       return expense.Amount >= low && expense.Amount <= high
     }))
+  }
+
+  public getEarliestDate = (): moment.Moment => {
+    let moments = this.Expenses.map(d => moment(d.Date))
+    return moment.min(moments)
+  }
+
+  public getLatestDate = (): moment.Moment => {
+    let moments = this.Expenses.map(d => moment(d.Date))
+    return moment.max(moments)
+  }
+
+  public Sum = (): number => {
+    return this.Expenses.map((expense) => parseNum(expense.Amount)).reduce((sum, element): number => sum + element, 0)
   }
 }

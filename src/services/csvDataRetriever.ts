@@ -11,6 +11,7 @@ import {
   GoalAggregate,
   AccountAggregate,
   DatedAmount,
+  ExpenseSummaryAggregate,
 } from '../models'
 import { AccountMap } from '../private/accounts'
 import moment from 'moment'
@@ -95,17 +96,15 @@ export class CsvDataRetriever implements IDataRetriever {
       if (!returnObject) {
         returnObject = []
       }
-      if (!Number.isNaN(parseNum(data['Monthly Budget']))) {
         returnObject.push(
           new Budget(
             data.Category,
-            parseNum(data['Monthly Budget']),
+            !Number.isNaN(parseNum(data['Monthly Budget'])) ? parseNum(data['Monthly Budget']) : 0,
             data.Type,
             !!data['Fixed Expense (Exclude from weekly report)'],
             !!data.Rollover,
           ),
         )
-      }
       return returnObject
     }
 
@@ -114,5 +113,9 @@ export class CsvDataRetriever implements IDataRetriever {
 
   public getBudgetAggregate = async (): Promise<BudgetAggregate> => {
     return new BudgetAggregate(await this.getBudgets())
+  }
+
+  public getExpenseSummaryAggregate = async (): Promise<ExpenseSummaryAggregate> => {
+    return new ExpenseSummaryAggregate(await this.getExpenseAggregate(), await this.getBudgetAggregate())
   }
 }

@@ -8,6 +8,7 @@ import {
   ExpenseAggregate,
   Goal,
   GoalAggregate,
+  ExpenseSummaryAggregate,
 } from '../models'
 
 export class StaticDataRetriever implements IDataRetriever {
@@ -77,5 +78,9 @@ export class StaticDataRetriever implements IDataRetriever {
         resolve(new BudgetAggregate(budgets))
       })
     })
+  }
+
+  public getExpenseSummaryAggregate = async (): Promise<ExpenseSummaryAggregate> => {
+    return new ExpenseSummaryAggregate(await this.getExpenseAggregate(), await this.getBudgetAggregate())
   }
 }

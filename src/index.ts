@@ -12,6 +12,15 @@ async function calculateGoals() {
   const budgetAggregate = await dataRetriever.getBudgetAggregate()
   const expenseAggregate = await dataRetriever.getExpenseAggregate()
 
+  const expenseSummaryAggregate = await dataRetriever.getExpenseSummaryAggregate()
+
+  expenseSummaryAggregate.ExpenseSummaries.forEach(element => {
+    console.log(moment(element.Date).format("MM/YYYY"))
+    console.log(element.TotalExpenses)
+    console.log(element.TotalIncome)
+    console.log('----------------')
+  });
+
   // goalCalculator.calculateByDate(goalAggregate, accountAggregate)
   // goalCalculator.calculateByPriority(goalAggregate, accountAggregate)
   // goalCalculator.calculateWeightedWithPriority(goalAggregate, accountAggregate, PriorityConsideration.None);

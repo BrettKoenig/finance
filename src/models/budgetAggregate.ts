@@ -21,4 +21,12 @@ export class BudgetAggregate {
       }
     })
   }
+
+  public GetBudgetsByType = (type: string): string[] => {
+    return this.Budgets.filter((budget: Budget) => {
+      return budget.Type === type
+    }).map((budget: Budget) => {
+      return budget.Name
+    })
+  }
 }
