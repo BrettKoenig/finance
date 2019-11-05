@@ -4,11 +4,11 @@
  * and cleaned of missing data.
  */
 async function getData() {
-  const carsDataReq = await fetch('https://storage.googleapis.com/tfjs-tutorials/carsData.json');
+  const carsDataReq = await fetch('http://localhost:3000');
   const carsData = await carsDataReq.json();
-  const cleaned = carsData.map(car => ({
-    mpg: car.Miles_per_Gallon,
-    horsepower: car.Horsepower,
+  const cleaned = carsData.ExpenseSummaries.map(car => ({
+    mpg: car.TotalExpenses,
+    horsepower: car.Date,
   }))
     .filter(car => (car.mpg != null && car.horsepower != null));
 
