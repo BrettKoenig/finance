@@ -6,8 +6,9 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist", 
-    "rootDir": "src"
+    "rootDir": "src",
+    "resolveJsonModule": true
   },
   "lib": ["es2015"],
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "src/**/*.json"]
 }
