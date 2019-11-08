@@ -1,11 +1,11 @@
-import { CsvDataRetriever } from './services/csvDataRetriever'
+import { GoogleDataRetriever } from './services/googleDataRetriever'
 import asyncHandler from 'express-async-handler'
 const cors = require('cors');
 const express = require('express');
 
 const app = express();
 
-const dataRetriever = new CsvDataRetriever();
+const dataRetriever = new GoogleDataRetriever();
 
 app.use(cors());
 app.options('*', cors());

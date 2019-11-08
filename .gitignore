@@ -6,3 +6,5 @@ dist/
 src/private/
 !src/tensorflow/*.js
 .DS_Store
+credentials.json
+token.json

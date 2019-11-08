@@ -8,7 +8,7 @@ async function getData() {
   const carsData = await carsDataReq.json();
   const cleaned = carsData.ExpenseSummaries.map(car => ({
     mpg: car.TotalExpenses,
-    horsepower: car.Date,
+    horsepower: new Date(car.Date),
   }))
     .filter(car => (car.mpg != null && car.horsepower != null));
 
