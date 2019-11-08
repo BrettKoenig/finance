@@ -61,18 +61,18 @@ export class GoogleReader implements ICsvReader {
 
     async function listFiles(auth) {
       var sheets = google.sheets('v4');
-      var fileId = ;
+      var fileId = '';
       var request = {
         spreadsheetId: fileId,
         range: filepath,
         auth: auth,
       };
-      return new Promise(function(presolve, preject) { 
+      return new Promise(function(resolve, reject) { 
         sheets.spreadsheets.values.get(request, function (err, response) {
         if (err) {
-          preject(err)
+          reject(err)
         }
-        presolve(response.data.values)
+        resolve(response.data.values)
       });
     })
     }
