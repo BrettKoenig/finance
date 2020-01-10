@@ -9,19 +9,22 @@ app.use(cors())
 require('dotenv').config()
 
 const dataRetriever = new GoogleDataRetriever();
+let databaseMock = {}
 
 app.listen(3000, () => {
   console.log("Server running on port 3000");
 });
 
-//  app.get('/expenses', asyncHandler(async (req, res, next) => {
-//   const expenses = await dataRetriever.getExpenses();
-//   res.status(200).json(expenses)
-// }))
-
 app.get('/:entity', asyncHandler(async (req, res, next) => {
   let data = null
-  switch (req.params.entity.toLowerCase()) {
+  const entity = req.params.entity.toLowerCase()
+  
+  if (databaseMock && databaseMock[entity]) {
+    res.status(200).send(databaseMock[entity])
+    return next();
+  }
+
+  switch (entity) {
     case 'expense':
       data = await dataRetriever.getExpenses();
       break;
@@ -47,5 +50,13 @@ app.get('/:entity', asyncHandler(async (req, res, next) => {
       data = await dataRetriever.getBudgetAggregate();
       break;
   }
-  return data ? res.status(200).json(data) : res.status(400).json({error: 'There was an error'})
+  
+  if (data) { 
+    databaseMock[entity] = data
+    res.status(200).send(data) 
+  } 
+  else { 
+    res.status(400).send({ error: 'There was an error' }) 
+  }
+  return next();
 }))
