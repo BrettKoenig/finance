@@ -7,3 +7,4 @@ src/private/
 .DS_Store
 credentials.json
 token.json
+*.env

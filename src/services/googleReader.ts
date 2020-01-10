@@ -61,7 +61,7 @@ export class GoogleReader implements ICsvReader {
 
     async function listFiles(auth) {
       var sheets = google.sheets('v4');
-      var fileId = '';
+      var fileId = process.env.GOOGLE_SHEET_ID;
       var request = {
         spreadsheetId: fileId,
         range: filepath,
