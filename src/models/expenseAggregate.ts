@@ -11,7 +11,7 @@ export class ExpenseAggregate {
 
   public findExpenseByDateRange = (startDate: moment.Moment, endDate: moment.Moment): ExpenseAggregate => {
     return new ExpenseAggregate(this.Expenses.filter((expense: Expense) => {
-      var compareDate = moment(expense.Date)
+      const compareDate = moment(expense.Date)
       return compareDate.isBetween(startDate, endDate, 'days', '[]')
     }))
   }

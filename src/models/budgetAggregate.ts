@@ -12,7 +12,7 @@ export class BudgetAggregate {
 
   public hydrateBudgets = (expenses: Expense[]): void => {
     expenses.forEach((expense: Expense) => {
-      var budget = this.Budgets.filter((x: Budget) => {
+      const budget = this.Budgets.filter((x: Budget) => {
         return x.Name === expense.Category
       });
 
