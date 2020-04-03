@@ -12,13 +12,19 @@ export class BudgetAggregate {
 
   public hydrateBudgets = (expenses: Expense[]): void => {
     expenses.forEach((expense: Expense) => {
-      const budget = this.Budgets.filter((x: Budget) => {
-        return x.Name === expense.Category
-      });
-
-      if(budget.length === 1){
-        budget[0].AddExpense(expense);
-      }
+      const budget = this.getBudgetByName(expense.Category)
+      budget.AddExpense(expense);
     })
   }
+
+  public getLevelForBudget = (budgetName: string): number => {
+    return this.getBudgetByName(budgetName).Level;
+  }
+
+  public getBudgetByName = (budgetName: string): Budget => {
+    return this.Budgets.filter((x: Budget) => {
+      return x.Name === budgetName
+    })[0];
+  }
 }
+

@@ -1,5 +1,6 @@
 import React from 'react'
 import Data from './data'
+import ExpenseDashboard from './expenseDashboard'
 import './App.css'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import 'react-tabs/style/react-tabs.css'
@@ -14,7 +15,7 @@ const App: React.FC = () => {
       </TabList>
 
       <TabPanel>
-        <Data name={'expense'} />
+        <ExpenseDashboard />
       </TabPanel>
       <TabPanel>
         <Data name={'account'} />

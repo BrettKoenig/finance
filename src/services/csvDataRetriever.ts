@@ -103,6 +103,7 @@ export class CsvDataRetriever implements IDataRetriever {
             data.Type,
             !!data['Fixed Expense (Exclude from weekly report)'],
             !!data.Rollover,
+            data.Level
           ),
         )
       }

@@ -40,8 +40,8 @@ export class StaticDataRetriever implements IDataRetriever {
   public getBudgets = (): Promise<Budget[]> => {
     return new Promise(resolve => {
       resolve([
-        new Budget('Restaurants', 200, 'Expense', false, true),
-        new Budget('Entertainment', 20, 'Expense', false, true),
+        new Budget('Restaurants', 200, 'Expense', false, true, 2),
+        new Budget('Entertainment', 20, 'Expense', false, true, 3),
         new Budget('Income', 10, 'Income', false, false),
       ])
     })

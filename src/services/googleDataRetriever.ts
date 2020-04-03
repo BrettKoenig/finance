@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import { GoogleReader } from './googleReader'
 import { ICsvReader } from './interfaces/ICsvReader'
 import { IDataRetriever } from './interfaces/IDataRetriever'
@@ -89,18 +90,20 @@ export class GoogleDataRetriever implements IDataRetriever {
     return new ExpenseAggregate(await this.getExpenses())
   }
 
-  public getBudgets = async (): Promise<Budget[]> => {
+  public getBudgets = async (includeIncome?: boolean): Promise<Budget[]> => {
     let returnObject = []
     const response = await this.csvReader.readFile('Budgets', null)
     response.forEach(x => {
       if (!isNaN(parseNum(x[1]))) {
-        returnObject.push(new Budget(x[0], parseNum(x[1]), x[7], !!x[5], !!x[6]))
+        returnObject.push(new Budget(x[0], parseNum(x[1]), x[7], !!x[5], !!x[6], +x[8]))
+      } else if (includeIncome) {
+        returnObject.push(new Budget(x[0], 0, x[7], !!x[5], !!x[6], +x[8]))
       }
     })
     return returnObject
   }
 
-  public getBudgetAggregate = async (): Promise<BudgetAggregate> => {
-    return new BudgetAggregate(await this.getBudgets())
+  public getBudgetAggregate = async (includeIncome?: boolean): Promise<BudgetAggregate> => {
+    return new BudgetAggregate(await this.getBudgets(includeIncome))
   }
 }

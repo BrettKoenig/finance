@@ -1,19 +1,17 @@
 import { Expense } from '.'
 import moment from 'moment'
 import fuzz from 'fuzzball'
+import { getExpenseByDateRange, getExpensesForCategory } from '../services/expenseService'
 
 export class ExpenseAggregate {
   public Expenses: Expense[]
 
-  public constructor(expenses: Expense[]) {
+  public constructor(expenses?: Expense[]) {
     this.Expenses = expenses
   }
 
   public findExpenseByDateRange = (startDate: moment.Moment, endDate: moment.Moment): ExpenseAggregate => {
-    return new ExpenseAggregate(this.Expenses.filter((expense: Expense) => {
-      const compareDate = moment(expense.Date)
-      return compareDate.isBetween(startDate, endDate, 'days', '[]')
-    }))
+    return new ExpenseAggregate(getExpenseByDateRange(startDate, endDate, this.Expenses))
   }
 
   public findExpensesForMonth = (month: Date): ExpenseAggregate => {
@@ -23,9 +21,7 @@ export class ExpenseAggregate {
   }
 
   public findExpensesByCategory = (categoryName: string): ExpenseAggregate => {
-    return new ExpenseAggregate(this.Expenses.filter((expense: Expense) => {
-      return expense.Category.trim().toLowerCase() === categoryName.trim().toLowerCase()
-    }))
+    return new ExpenseAggregate(getExpensesForCategory(categoryName, this.Expenses))
   }
 
   public findExpensesByDescription = (description: string, exactMatch?: false): ExpenseAggregate => {
@@ -38,5 +34,9 @@ export class ExpenseAggregate {
     return new ExpenseAggregate(this.Expenses.filter((expense: Expense) => {
       return expense.Amount >= low && expense.Amount <= high
     }))
+  }
+
+  public getDateOfFirstExpense = (): Date => {
+    return new Date(Math.min.apply(null, this.Expenses.map((expense) => new Date(expense.Date))));
   }
 }
